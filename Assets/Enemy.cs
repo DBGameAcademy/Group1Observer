@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
-        Player.RegisterEnemy(this);
+        GameController.RegisterEnemy(this);
         state = eStates.attack;
     }
 
@@ -28,11 +28,11 @@ public class Enemy : MonoBehaviour
         Vector2 direction;
         switch (state) {
             case eStates.attack:
-                direction = Player.GetPos() - (Vector2)transform.position;
+                direction = GameController.GetPlayerPos() - (Vector2)transform.position;
                 myRigidbody.velocity = direction * mooveSpeed;
                 break;
             case eStates.runaway:
-                direction = (Vector2) transform.position - Player.GetPos();
+                direction = (Vector2) transform.position - - GameController.GetPlayerPos();
                 myRigidbody.velocity = direction * mooveSpeed;
                 break;
         }
