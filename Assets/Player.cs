@@ -6,7 +6,9 @@ using System;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] UnityEvent OnRagemode;
+    //[SerializeField] UnityEvent OnRagemode;
+    public static Action OnRampageModeAction;
+    public static Action OnRampageModeActionEnd;
 
     public int maxHealth = 100;
     public int currentHealth;
@@ -39,7 +41,6 @@ public class Player : MonoBehaviour
                 break;
 
             case eStates.rage:
-
                 break;
         }
 
@@ -81,12 +82,17 @@ public class Player : MonoBehaviour
         if (state == eStates.rage)
         {
             state = eStates.normal;
+            NotifyRageModeEnd();
         }
     }
 
     private void NotifyRageMode()
     {
-        OnRagemode?.Invoke();
+        OnRampageModeAction?.Invoke();
     }
 
+    private void NotifyRageModeEnd()
+    {
+        OnRampageModeActionEnd?.Invoke();
+    }
 }

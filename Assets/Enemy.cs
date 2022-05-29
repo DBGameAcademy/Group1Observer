@@ -56,4 +56,22 @@ public class Enemy : MonoBehaviour
         state = eStates.runaway;
     }
 
+    public void OnNotifyRageModeEnd()
+    {
+        state = eStates.attack;
+    }
+
+    private void OnEnable()
+    {
+        Player.OnRampageModeAction += OnNotifyRageMode;
+        Player.OnRampageModeActionEnd += OnNotifyRageModeEnd;
+    }
+
+    private void OnDisable()
+    {
+        Player.OnRampageModeAction -= OnNotifyRageMode;
+        Player.OnRampageModeActionEnd -= OnNotifyRageModeEnd;
+
+    }
+
 }
