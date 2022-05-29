@@ -1,28 +1,92 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using System;
 
 public class Player : MonoBehaviour
 {
-    // nell' uml non ci sono, ma potreste mettere 2 stati anche qui
-    private void Start() {
-        GameController.RegisterPlayer(this);
+    [SerializeField] UnityEvent OnRagemode;
+
+    public int maxHealth = 100;
+    public int currentHealth;
+
+    enum eStates
+    {
+        normal,
+        rage
     }
 
-    public Vector2 GetPos() {
+    eStates state { get; set; }
+
+    // nell' uml non ci sono, ma potreste mettere 2 stati anche qui
+    private void Start()
+    {
+        maxHealth = currentHealth;
+        GameController.RegisterPlayer(this);
+        state = eStates.normal;
+    }
+
+    private void Update()
+    {
+        Debug.Log("Current Health: " + currentHealth);
+
+        switch (state)
+        {
+            case eStates.normal:
+                RageMode();
+
+                break;
+
+            case eStates.rage:
+
+                break;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Heal();
+        }
+    }
+
+    public Vector2 GetPos()
+    {
         return transform.position;
     }
 
-    public void GetDamage(int _damage) {
-        throw new NotImplementedException();
+    public void GetDamage(int _damage)
+    {
+        if (currentHealth <= 0)
+        {
+            return;
+        }
+        else
+        {
+            currentHealth -= _damage;
+        }
     }
 
-    private void NotifyRageMode() {
-        throw new NotImplementedException();
+    void RageMode()
+    {
+        if (currentHealth < 10)
+        {
+            state = eStates.rage;
+            NotifyRageMode();
+        }
     }
 
+    void Heal()
+    {
+        currentHealth = maxHealth;
+        if (state == eStates.rage)
+        {
+            state = eStates.normal;
+        }
+    }
 
-
+    private void NotifyRageMode()
+    {
+        OnRagemode?.Invoke();
+    }
 
 }
