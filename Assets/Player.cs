@@ -13,6 +13,8 @@ public class Player : MonoBehaviour
     public int maxHealth = 100;
     public int currentHealth;
 
+    SpriteRenderer playerColor;
+
     enum eStates
     {
         normal,
@@ -24,6 +26,8 @@ public class Player : MonoBehaviour
     // nell' uml non ci sono, ma potreste mettere 2 stati anche qui
     private void Start()
     {
+        playerColor = GetComponent<SpriteRenderer>();
+
         maxHealth = currentHealth;
         GameController.RegisterPlayer(this);
         state = eStates.normal;
@@ -41,6 +45,7 @@ public class Player : MonoBehaviour
                 break;
 
             case eStates.rage:
+                playerColor.color = Color.red;
                 break;
         }
 

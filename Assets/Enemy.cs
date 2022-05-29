@@ -8,6 +8,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] int Damage;
     Rigidbody2D myRigidbody;
 
+    SpriteRenderer enemyColor;
+
     enum eStates
     {
         attack,
@@ -18,6 +20,8 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
+        enemyColor = GetComponent<SpriteRenderer>();
+
         myRigidbody = GetComponent<Rigidbody2D>();
         GameController.RegisterEnemy(this);
         state = eStates.attack;
@@ -37,6 +41,7 @@ public class Enemy : MonoBehaviour
             case eStates.runaway:
                 direction = (Vector2)transform.position - -GameController.GetPlayerPos();
                 myRigidbody.velocity = direction * mooveSpeed;
+                enemyColor.color = Color.cyan;
                 break;
         }
     }
